@@ -1,0 +1,16 @@
+package Interface;
+
+public interface Printer {
+	void printjob();//implicitly public abstract
+	
+	default  void scan() {
+		System.out.println("scan...");
+		
+		
+		static void threeDPrint() {
+			System.out.println("3D print...");
+		}
+		
+	}
+
+}

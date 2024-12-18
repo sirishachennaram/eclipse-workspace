@@ -1,0 +1,134 @@
+import java.util.*;
+
+public class ProjectorAPP {
+    
+    static class Projector {
+        String projectorName;
+        String projectorDescription;
+        double budget;
+        
+        Projector(String projecortName, String projecortDescription, double budget) {
+            this.projectorName = projectorName;
+            this.projectorDescription = projectorDescription;
+            this.budget = budget;
+        }
+        
+        @Override
+        public String toString() {
+            return "Projector Name: " + projectorName + ", Description: " + projectorDescription + ", Budget: " + budget;
+        }
+    }
+    
+    static List<Projector> projectors = new ArrayList<>();
+    
+    public static void main(String[] args) {
+        Scanner in = new Scanner(System.in);
+        int option = 0;
+
+        do {
+            System.out.println("\nPROJECTOR APPLICATION");
+            System.out.println("----------------------");
+            System.out.println("1. Create New Projector");
+            System.out.println("2. Retrieve All Projectors");
+            System.out.println("3. Search Projector by Name");
+            System.out.println("4. Update Projector Details");
+            System.out.println("5. Delete Projector");
+            System.out.println("6. About Projector App");
+            System.out.println("0. Quit");
+            System.out.println("Please select an option:");
+            option = in.nextInt();
+            in.nextLine();  // Consume the newline character
+            
+            switch (option) {
+                
+                case 1: // Create a new projector
+                    System.out.println("Enter Projector Name:");
+                    String name = in.nextLine();
+                    System.out.println("Enter Projector Description:");
+                    String description = in.nextLine();
+                    System.out.println("Enter Projector Budget:");
+                    double budget = in.nextDouble();
+                    in.nextLine();  // Consume the newline character
+                    
+                    projectors.add(new Projector(name, description, budget));
+                    System.out.println("New projector added successfully!");
+                    break;
+                    
+                case 2: // Retrieve all projectors
+                    System.out.println("\nAll Projectors:");
+                    if (projectors.isEmpty()) {
+                        System.out.println("No projectors available.");
+                    } else {
+                        projectors.forEach(projector -> System.out.println(projector));
+                    }
+                    break;
+                    
+                case 3: // Search projector by name
+                    System.out.println("Enter Projector Name to Search:");
+                    String searchName = in.nextLine();
+                    projectors.stream()
+                            .filter(projector -> projector.projectorName.equalsIgnoreCase(searchName))
+                            .findFirst()
+                            .ifPresentOrElse(
+                                    projector -> System.out.println(projector),
+                                    () -> System.out.println("Projector not found.")
+                            );
+                    break;
+                    
+                case 4: // Update projector details
+                    System.out.println("Enter Projector Name to Edit:");
+                    String editName = in.nextLine();
+                    Optional<Projector> projectorOpt = projectors.stream()
+                            .filter(projector -> projector.projectorName.equalsIgnoreCase(editName))
+                            .findFirst();
+                    
+                    if (projectorOpt.isPresent()) {
+                        Projector projector = projectorOpt.get();
+                        System.out.println("Enter new Projector Description (current: " + projector.projectorDescription + "):");
+                        String newDescription = in.nextLine();
+                        System.out.println("Enter new Projector Budget (current: " + projector.budget + "):");
+                        double newBudget = in.nextDouble();
+                        in.nextLine();  // Consume the newline character
+                        
+                        projector.projectorDescription = newDescription;
+                        projector.budget = newBudget;
+                        System.out.println("Projector details updated successfully!");
+                    } else {
+                        System.out.println("Projector not found.");
+                    }
+                    break;
+                    
+                case 5: // Delete a projector
+                    System.out.println("Enter Projector Name to Remove:");
+                    String removeName = in.nextLine();
+                    boolean removed = projectors.removeIf(projector -> projector.projectorName.equalsIgnoreCase(removeName));
+                    if (removed) {
+                        System.out.println("Project removed successfully.");
+                    } else {
+                        System.out.println("Project not found.");
+                    }
+                    break;
+                    
+                case 6: // About the Projector App
+                    System.out.println("\nABOUT THE PROJECTOR APP");
+                    System.out.println("------------------------");
+                    System.out.println("Projector App is a simple application that allows users to manage projector details.");
+                    System.out.println("Features include creating new projectors, viewing all projectors, searching projectors by name,");
+                    System.out.println("updating projector details (description and budget), and deleting projectors from the system.");
+                    System.out.println("This app is ideal for small projector management or tracking purposes.");
+                    System.out.println("Developed using Java and utilizes basic data structures like ArrayList for projector management.");
+                    break;
+                    
+                case 0: // Quit the application
+                    System.out.println("Thank you for using the Projector App.");
+                    System.out.println("Goodbye!");
+                    System.exit(0);
+                    break;
+                    
+                default: // Invalid option
+                    System.out.println("Invalid Option! Please try again.");
+                    break;
+            }
+        } while (option != 0);
+    }
+}
